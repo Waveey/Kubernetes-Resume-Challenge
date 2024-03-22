@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.website.fullname | quote }}
+  namespace: {{ .Values.namespace | quote }}
+  labels:
+    app: ecomm-app
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate  
+  replicas: {{ .Values.replicas | default 1 }}
+  selector:
+    matchLabels:
+      app: ecomm-app
+  template:
+    metadata:
+      labels:
+        app: ecomm-app  
+    spec:
+      containers:
+      - name: ecomm-container
+        image: {{ .Values.website.image }}
+        ports:
+        - containerPort: {{ .Values.website.port  | default 80 }}
+        env:
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.website.configmap.env.fullname | quote }}
+              key: DB_HOST
+        - name: DB_USER
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.website.configmap.env.fullname | quote }}
+              key: DB_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.website.secret.fullname | quote }}
+              key: DB_PASSWORD
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.website.configmap.env.fullname | quote }}
+              key: DB_NAME
+        - name: FEATURE_DARK_MODE
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.website.configmap.featureToggle.fullname | quote }}
+              key: FEATURE_DARK_MODE
+        resources:
+          requests:
+            cpu: "300m"
+
+--- 
+
+

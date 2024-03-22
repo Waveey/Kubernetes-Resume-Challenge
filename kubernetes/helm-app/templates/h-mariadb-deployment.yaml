@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.database.fullname | quote }}
+  namespace: {{ .Values.namespace | quote }}
+spec:
+  replicas: {{ .Values.database.replicas }}
+  selector:
+    matchLabels:
+      app: mariadb
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+      - name: mariadb
+        image: {{ .Values.database.image | default "cloudiepad/ecom-db:v1" | quote }}
+        ports:
+        - containerPort: {{ .Values.database.service.port | default 3306 }}
+        resources: {}
+        volumeMounts:
+        - name: mariadb-persistent-storage
+          mountPath: /var/lib/mysql   # Mount path inside the container
+      volumes:
+      - name: mariadb-persistent-storage
+        persistentVolumeClaim:
+          claimName: mariadb-pvc
+
+

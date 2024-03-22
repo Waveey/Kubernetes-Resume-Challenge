@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: feature-toggle-config
+  namespace: {{ .Values.namespace | quote }}
+data:
+  FEATURE_DARK_MODE: "true"
+
+

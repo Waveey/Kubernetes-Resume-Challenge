@@ -20,7 +20,17 @@
         <link rel="stylesheet" href="vendors/owl_carousel/owl.carousel.css">
 
         <!-- Theme style CSS -->
-        <link href="css/style.css" rel="stylesheet">
+        <?php
+            $darkModeEnabled = getenv('FEATURE_DARK_MODE') === 'true';
+
+            if ($darkModeEnabled) {
+                echo '<link rel="stylesheet" href="css/style-dark.css">';
+            } else {
+                echo '<link rel="stylesheet" href="css/style.css">';
+            }
+        ?>
+
+        <!-- <link href="css/style.css" rel="stylesheet"> -->
 <!--        <link href="css/responsive.css" rel="stylesheet">  -->
 
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -103,16 +113,28 @@
             </div>
             <div class="row it_works">
               <?php
+                        // env[DB_HOST] = $host;
+                        // env[DB_USER] = $username;
+                        // env[DB_PASSWORD] = $password;
+                        // env[DB_NAME] = $dbname;
 
-                        // $link = mysqli_connect('172.20.1.101', 'ecomuser', 'ecompassword', 'ecomdb');
-                        // Fetch database connection details directly from environment variables
-                        $dbHost = getenv('DB_HOST');
-                        $dbUser = getenv('DB_USER');
-                        $dbPassword = getenv('DB_PASSWORD');
-                        $dbName = getenv('DB_NAME');
+                        // $host = $_ENV["MARIADB_SERVICE_SERVICE_HOST"];
+                        // $username = $_ENV["DB_USER"];
+                        // $password = $_ENV["DB_PASSWORD"];
+                        // $dbname = $_ENV["DB_NAME"];
 
-                        // Attempt to connect to the database
-                        $link = mysqli_connect($dbHost, $dbUser, $dbPassword, $dbName);
+                        $host = getenv('DB_HOST');
+                        $username = getenv('DB_USER');
+                        $password = getenv('DB_PASSWORD');
+                        $dbname = getenv('DB_NAME');
+
+
+                        $link = mysqli_connect($host, $username, $password, $dbname);
+                        // Check connection
+                        if ($link->connect_error) {
+                            die("Connection failed: " . $link->connect_error);
+                            echo '<script>console.log("Connection failed: " . $link->connect_error); </script>'; 
+                        }
 
                         if ($link) {
                         $res = mysqli_query($link, "select * from products;");
@@ -155,6 +177,19 @@
             </div>
         </section>
 
+        <!--==========Promotional Banner==========-->
+        <!-- <div class="banner">
+            <div class="banner__content">
+                <div class="banner__text">
+                <strong>Enjoy Exclusive Discounts and Vouchers on Our Trendsetting Collection. Shop Now and Elevate Your Style Game!</strong>
+                </div>
+                <button class="banner__close" type="button">
+                    <span class="material-icons">
+                    close
+                    </span>
+                </button>
+            </div>
+        </div> -->
 
         <footer class="footer_area row">
             <div class="container custom-container">

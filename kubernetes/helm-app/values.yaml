@@ -1,0 +1,88 @@
+replicas: 1
+namespace: helm
+
+database: 
+  enabled: true
+  fullname: mariadb-deployment
+  replicas: 1
+  image: cloudiepad/ecom-db:v1
+  labels:
+    app: mariadb
+
+  service:
+    fullname: mariadb-service
+    type: ClusterIP
+    port: 3306
+  
+  secret:
+    fullname: mariadb-secret
+    username: cm9vdA==
+    password: YWRtaW4xMjM0NSE=
+  
+  configmap:
+    initsql:
+      fullname: mariadb-load-script
+  
+  storage:
+    persistentVolumeName: mariadb-pvc
+    persistentVolumeClaimName: mariadb-pvc
+    storageSize: 200Mi
+  
+
+  resources:
+    requests:
+      cpu: 10m
+      memory: 100Mi
+    limits:
+      cpu: 100m
+      memory: 300Mi
+
+
+website:
+  enabled: true
+  fullname: ecomm-app-deployment
+  replicas: 1
+  image: cloudiepad/ecomm-img:v5
+  port: 80
+  labels:
+    app: ecom-web
+  
+  service:
+    fullname: website-service
+    type: LoadBalancer
+    port: 80
+  
+  secret:
+    fullname: db-secret
+    password: cGFzc3dvcmQxMjM= 
+  
+  configmap:
+    env:
+      fullname: website-configmap
+    password: password123 
+    featureToggle:
+      fullname: feature-toggle-config
+     
+  hpa:
+    name: ecomm-hpa
+
+
+  resources:
+    requests:
+      cpu: 10m
+      memory: 20Mi
+    limits:
+      cpu: 100m
+      memory: 300Mi
+
+autoscaling:
+  enabled: true
+  hpa:
+    fullname: ecom-app-hpa
+    minReplicas: 1
+    maxReplicas: 1
+    targetCPUUtilizationPercentage: 95
+    targetMemoryUtilizationPercentage: 95
+
+test:
+  enabled: false

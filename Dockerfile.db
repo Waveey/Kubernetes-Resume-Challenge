@@ -1,0 +1,17 @@
+# Use a base image that includes MariaDB
+# Use the official MariaDB image as the base image
+FROM mariadb:latest
+
+# Set environment variables
+ENV MYSQL_ROOT_PASSWORD=password123
+ENV MYSQL_DATABASE=ecomdb
+ENV MYSQL_USER=ecomdb-user
+ENV MYSQL_PASSWORD=password123
+
+# Copy the schema file into the Docker container
+COPY /assets/db-load-script.sql /docker-entrypoint-initdb.d/
+
+# Expose the port
+EXPOSE 3306
+
+

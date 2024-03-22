@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.website.configmap.env.fullname | quote }}
+  namespace: {{ .Values.namespace | quote }}
+data:
+  DB_NAME: "ecomdb"
+  DB_HOST: {{ .Values.database.service.fullname | quote }}
+  DB_USER: "ecomdb-user"
+  DB_PASSWORD: {{ .Values.website.configmap.password | quote }}

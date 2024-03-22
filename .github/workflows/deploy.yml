@@ -1,0 +1,51 @@
+name: Build and push docker image to ECR
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install kubectl
+      uses: azure/setup-kubectl@v2.0
+      with:
+        version: 'v1.27.0' # default is latest stable
+      id: install
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    - name: Login to Amazon ECR Public
+      id: login-ecr-public
+      uses: aws-actions/amazon-ecr-login@v2
+      with:
+        registry-type: public
+
+    - name: Build, tag, and push docker image to Amazon ECR Public
+      env:
+        REGISTRY: ${{ secrets.ECR_REGISTRY }}
+        REPOSITORY: kubernetes-resume-challenge-repo
+        IMAGE_TAG: latest
+      run: |
+        docker build -t  ${{ secrets.ECR_REGISTRY }}/kubernetes-resume-challenge-repo:latest .
+        docker push  ${{ secrets.ECR_REGISTRY }}/kubernetes-resume-challenge-repo:latest
+    
+
+    - name: Update kube config
+      run: aws eks update-kubeconfig --name kubernetes-cluster
+
+    - name: Deploy go-app helm chart to EKS
+      run: |
+        helm uninstall helm-app -n helm
+        cd kubernetes/helm-app
+        helm install helm-app helm-app -f values.yaml . -n helm
