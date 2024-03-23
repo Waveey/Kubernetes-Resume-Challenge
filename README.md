@@ -1,6 +1,6 @@
 The Kubernetes Resume Challenge by Forrest Brazeal
 
-Finally completed this project after a long stretch of learning.
+Finally completed this project and I must say that this is a very educative, deep dive into the inner workings of kubernetes.
 
 Directory structure
 - Dockerfile - builds docker image for the website
