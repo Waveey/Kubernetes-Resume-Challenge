@@ -52,28 +52,5 @@ spec:
               key: FEATURE_DARK_MODE
         resources:
           requests:
-            cpu: "300m"
+            cpu: "300m"      
 
---- 
-
-apiVersion: autoscaling/v2
-kind: HorizontalPodAutoscaler
-metadata:
-  namespace: default
-  name: ecomm-hpa
-  labels:
-    app: ecomm-app
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: ecomm-app-deployment
-  minReplicas: 1  
-  maxReplicas: 5   
-  metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 85

@@ -3,10 +3,10 @@
 FROM mariadb:latest
 
 # Set environment variables
-ENV MYSQL_ROOT_PASSWORD=password123
-ENV MYSQL_DATABASE=ecomdb
-ENV MYSQL_USER=ecomdb-user
-ENV MYSQL_PASSWORD=password123
+ENV DB_ROOT_PASSWORD=password123
+ENV DB_DATABASE=ecomdb
+ENV DB_USER=ecomdb-user
+ENV DB_PASSWORD=password123
 
 # Copy the schema file into the Docker container
 COPY /assets/db-load-script.sql /docker-entrypoint-initdb.d/
