@@ -3,7 +3,7 @@
 FROM mariadb:latest
 
 # Set environment variables
-ENV MYSQL_ROOT_PASSWORD=password123
+ENV MARIADB_ROOT_PASSWORD=password123
 ENV DB_NAME=ecomdb
 ENV DB_USER=ecomdb-user
 ENV DB_PASSWORD=password123

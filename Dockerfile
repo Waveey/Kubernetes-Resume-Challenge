@@ -6,6 +6,12 @@ ENV APACHE_LOG_DIR /var/log/apache2
 # Set PHP log directory
 ENV PHP_LOG_DIR /var/log/php
 
+ENV MARIADB_ROOT_PASSWORD password123
+ENV DB_NAME ecomdb
+ENV DB_USER ecomdb-user
+ENV DB_PASSWORD password123
+
+
 RUN a2enmod env
 
 # Optionally, you can configure Apache to pass all environment variables to PHP
