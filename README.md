@@ -1,4 +1,4 @@
-The Kubernetes Resume Challenge by Forrest Brazeal
+The Kubernetes Resume Challenge by Forrest Brazeal 
 
 Finally completed this project and I must say that this is a very educative, deep dive into the inner workings of kubernetes.
 
