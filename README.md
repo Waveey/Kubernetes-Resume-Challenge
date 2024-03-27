@@ -10,5 +10,5 @@ Directory structure
 - /kubernetes/helm-app - helm chart directory
 - /.github/workflows/deploy.yml - CICD file to deploy to AWS EKS  
 
-Link to a detailed blog article on this project - 
-LinkedIn - https://www.linkedin.com/in/ogonna-nnamani/
+Link to a detailed blog article on this project -  https://dev.to/cloudiepad/the-kubernetes-resume-challenge-part-1-488d
+- LinkedIn - https://www.linkedin.com/in/ogonna-nnamani/
